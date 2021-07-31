@@ -12,59 +12,73 @@ export default class ApiService {
   
     async getAllPeople() {
       const res = await this.getResource(`/people`);
-      return res.results;
+      return res.results.map(this._transformPersonOutput);
     }
   
-    getPerson(id) {
-      return this.getResource(`/people/${id}`)
+    async getPerson(id) {
+      const person = await this.getResource(`/people/${id}`)
+      return this._transformPersonOutput(person)
     }
   
     async getAllPlanets() {
       const res = await this.getResource('/planets');
-      return res.results
+      return res.results.map(this._transformPlanetOutput)
     }
   
-    getPlanet(id) {
-      return this.getResource(`/planets/${id}`)
+    async getPlanet(id) {
+      const planet = await this.getResource(`/planets/${id}`)
+      return this._transformPlanetOutput(planet)
     }
   
     async getAllStarships() {
       const res = await this.getResource('/starships')
-      return res.results
+      return res.results.map(this._transformStarshipOutput)
     }
   
-    getStarship(id) {
-      return this.getResource(`/starships/${id}`)
+    async getStarship(id) {
+      const starship = await this.getResource(`/starships/${id}`)
+      return this._transformStarshipOutput(starship)
     }
   
+
+    _extractId(item) {
+      const idRegExp = /\/([0-9]*)\/$/;
+      return item.url.match(idRegExp)[1];
+    }
+
+    _transformPersonOutput(person) {
+      return {
+        id: this._extractId(person),
+        name: person.name,
+        gender: person.gender,
+        birthYear: person.birthYear,
+        eyeColor: person.eyeColor
+      }
+    }
+
+    _transformStarshipOutput(starship) {
+      return {
+        id: this._extractId(starship),
+        planetName: starship.name,
+        model: starship.model,
+        manufacturer: starship.manufacturer,
+        costInCredits: starship.costInCredits,
+        length: starship.length,
+        crew: starship.crew,
+        passengers: starship.passengers,
+        cargoCapacity: starship.cargoCapacity
+      }
+    }
+
+    _transformPlanetOutput(planet) {
+      return {
+        id: this._extractId(planet),
+        planetName: planet.name,
+        population: planet.population,
+        rotationPeriod: planet.rotation_period,
+        diameter: planet.diameter
+      }
+    }
+
   }
   
-  
-  const api = new ApiService()
-  
-  api.getAllPeople().then((people) => {
-    console.log(people)
-  
-    // people.forEach((p) => {
-    //   console.log(p.name)
-    // })
-  })
-  
-  
-  // api.getPerson(14).then((person) => {
-  //   console.log(person)
-  // })
-  
-  
-  api.getAllPlanets().then((planets) => {
-    console.log(planets)
-  
-    // planets.forEach((planet) => {
-    //   console.log(planet.name)
-    // })
-  })
-  
-  
-  // api.getPlanet(44).then((planet) => {
-  //   console.log(planet)
-  // })
