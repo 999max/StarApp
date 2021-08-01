@@ -11,7 +11,7 @@ export default class ApiService {
     }
   
     async getAllPeople() {
-      const res = await this.getResource(`/people`);
+      const res = await this.getResource('/people');
       return res.results.map(this._transformPersonOutput);
     }
   
@@ -46,7 +46,7 @@ export default class ApiService {
       return item.url.match(idRegExp)[1];
     }
 
-    _transformPersonOutput(person) {
+    _transformPersonOutput = (person) => {
       return {
         id: this._extractId(person),
         name: person.name,
@@ -56,7 +56,7 @@ export default class ApiService {
       }
     }
 
-    _transformStarshipOutput(starship) {
+    _transformStarshipOutput = (starship) => {
       return {
         id: this._extractId(starship),
         planetName: starship.name,
@@ -70,7 +70,7 @@ export default class ApiService {
       }
     }
 
-    _transformPlanetOutput(planet) {
+    _transformPlanetOutput = (planet) => {
       return {
         id: this._extractId(planet),
         planetName: planet.name,
