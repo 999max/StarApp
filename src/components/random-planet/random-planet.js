@@ -9,18 +9,11 @@ export default class RandomPlanet extends Component {
 
   api = new ApiService()
   
-
   state = {
     planet: {},
     loading: true,
     error: false
   }
-  
-  constructor() {
-    super()
-    this.updatePlanet()
-  }
-
 
   onError = (err) => {
     this.setState({
@@ -36,12 +29,21 @@ export default class RandomPlanet extends Component {
     })
   }
 
-  updatePlanet() {
-    const id = 1000 //Math.floor(Math.random() * 25) + 1
+  updatePlanet = () => {
+    const id = Math.floor(Math.random() * 60) + 1
     this.api.getPlanet(id).then(this.onPlanetLoaded)
       .catch(this.onError)
   }
   
+  componentDidMount() {
+    this.updatePlanet()
+    this.interval = setInterval(this.updatePlanet, 7000)
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval)
+  }
+
   render () {
     const { planet, loading, error } = this.state
     const loader = loading ? <Loader /> : null
