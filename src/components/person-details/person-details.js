@@ -1,6 +1,6 @@
-import { Component } from 'react';
+import React, { Component } from 'react';
 import ApiService from '../../services/api-service';
-// import Loader from '../loader';
+import Loader from '../loader';
 import './person-details.css';
 
 export default class PersonDetails extends Component {
@@ -9,6 +9,7 @@ export default class PersonDetails extends Component {
 
   state = {
     person: null,
+    loading: true,
   }
 
   componentDidMount() {
@@ -22,6 +23,10 @@ export default class PersonDetails extends Component {
   }
 
   updatePerson() {
+    this.setState({
+      loading: true
+    })
+    
     const { personId } = this.props;
     if(!personId) {
       return;
@@ -29,21 +34,34 @@ export default class PersonDetails extends Component {
 
     this.api.getPerson(personId)
       .then((person) => {
-        this.setState({ person })
+        this.setState({ 
+          person,
+          loading: false
+        })
       })
   }
   
   render() {
 
-    if (!this.state.person) {
-      return <span>Select a person fromo list</span>
-    }
+    const { person, loading } = this.state;
 
-    const { id, name, gender,
-            birthYear, eyeColor } = this.state.person;
-      console.log(id, gender, birthYear)
+    const loader = loading ? <Loader /> : null;
+    const content = !loading ? <PersonView person={person} /> : null
+
     return (
       <div className="person-details card">
+        {loader}
+        {content}
+      </div>
+    )
+  }
+}
+
+const PersonView = ({ person }) => {
+
+    const { id, name, gender, birthYear, eyeColor } = person
+    return (
+      <React.Fragment>
         <img className="person-image"
           src={`https://starwars-visualguide.com/assets/img/characters/${id}.jpg`} 
           alt="character"/>
@@ -65,9 +83,6 @@ export default class PersonDetails extends Component {
             </li>
           </ul>
         </div>
-      </div>
+      </React.Fragment>
     )
-  }
 }
-
-// export default PersonDetails;
