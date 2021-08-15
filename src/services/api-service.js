@@ -1,6 +1,6 @@
 export default class ApiService {
 
-    _apiBase = 'https://swapi.dev/api'
+    _apiBase = 'https://swapi.py4e.com/api'  // 'https://swapi.dev/api'
   
     async getResource(url) {
       const response = await fetch(`${this._apiBase}${url}`);
@@ -51,8 +51,8 @@ export default class ApiService {
         id: this._extractId(person),
         name: person.name,
         gender: person.gender,
-        birthYear: person.birthYear,
-        eyeColor: person.eyeColor
+        birthYear: person.birth_year,
+        eyeColor: person.eye_color
       }
     }
 
@@ -62,11 +62,11 @@ export default class ApiService {
         planetName: starship.name,
         model: starship.model,
         manufacturer: starship.manufacturer,
-        costInCredits: starship.costInCredits,
+        costInCredits: starship.cost_in_credits,
         length: starship.length,
         crew: starship.crew,
         passengers: starship.passengers,
-        cargoCapacity: starship.cargoCapacity
+        cargoCapacity: starship.cargo_capacity
       }
     }
 
