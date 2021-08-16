@@ -18,3 +18,8 @@
 .person-details .list-group-item .term {
   margin-right: .5rem;
 }
+
+.person-details .person-image {
+  margin: 15px;
+  flex-direction: row;
+}
