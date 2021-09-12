@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ApiService from '../../services/api-service';
+import ErrorButton from '../error-button';
 import Loader from '../loader';
 import './person-details.css';
 
@@ -82,6 +83,7 @@ const PersonView = ({ person }) => {
               <span>{eyeColor}</span>
             </li>
           </ul>
+          <ErrorButton />
         </div>
       </React.Fragment>
     )
